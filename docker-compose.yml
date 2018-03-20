@@ -2,40 +2,34 @@ version: '3'
 
 services:  
 
-  selenium:
-    image: selenium/hub
+  hub:
+    image: selenium/hub:3.0.1-germanium
     expose:
       - 4444
-    volumes:
-      - /dev/shm:/dev/shm
     networks:
       - selenium-grid
 
   chrome:
-    image: selenium/node-chrome
+    image: selenium/node-chrome-debug:3.0.1-germanium
     environment:
       - HUB_PORT_4444_TCP_ADDR=hub
       - HUB_PORT_4444_TCP_PORT=4444
-    volumes:
-      - /dev/shm:/dev/shm
     ports:
       - 5900:5900
     depends_on:
-      - selenium
+      - hub
     networks:
       - selenium-grid
 
   firefox:
-    image: selenium/node-firefox
+    image: selenium/node-firefox-debug:3.0.1-germanium
     environment:
       - HUB_PORT_4444_TCP_ADDR=hub
       - HUB_PORT_4444_TCP_PORT=4444
-    volumes:
-      - /dev/shm:/dev/shm
     ports:
       - 5901:5900
     depends_on:
-      - selenium
+      - hub
     networks:
       - selenium-grid
 
